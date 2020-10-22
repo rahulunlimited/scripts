@@ -1,0 +1,15 @@
+#Convert the Trigger Name and State variables to array
+$Trigger = "$(TriggerName)".Split(" ")
+$State = "$(TriggerState)".Split(" ")
+$Count = $Trigger.Count
+
+#Loop through all the previous triggers
+for ($i=0; $i -lt $Count; $i++) {
+    Write-Output ("Trigger " + $Trigger[$i] + " was " + $State[$i])
+    #Start the triggers if they were not previously stopped
+    if ($State[$i] -ne "Stopped") {
+        Write-Output ("Starting Trigger " + $Trigger[$i])
+        Start-AzDataFactoryV2Trigger -ResourceGroupName $(ResourceGroupName) -DataFactoryName $(DataFactoryName) -Name $Trigger[$i] -Force
+    }
+}
+

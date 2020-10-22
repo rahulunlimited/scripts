@@ -1,0 +1,17 @@
+$triggersADF = Get-AzDataFactoryV2Trigger -DataFactoryName $(DataFactoryName) -ResourceGroupName $(ResourceGroupName)
+Write-Output $triggersADF
+
+#Setting the variables for Trigger Name and Trigger State. These will be used in the last step to retain Trigger State after deployment
+$tgname = @()
+$tgstate = @()
+$triggersADF | ForEach-Object { $tgname +=  $_.name}
+$triggersADF | ForEach-Object { $tgstate +=  $_.RuntimeState}
+Write-Host ("##vso[task.setvariable variable=TriggerName]$tgname")
+Write-Host ("##vso[task.setvariable variable=TriggerState]$tgstate")
+#End Step
+
+$triggersADF | ForEach-Object { Write-Output ("Trigger " + $_.name)  }
+$triggersADF | ForEach-Object { Write-Output ("Trigger " + $_.RuntimeState)  }
+
+#Stop all triggers before deployment, so that jobs do not trigger while deployment is on
+$triggersADF | ForEach-Object { Stop-AzDataFactoryV2Trigger -ResourceGroupName $(ResourceGroupName) -DataFactoryName $(DataFactoryName) -Name $_.name -Force }

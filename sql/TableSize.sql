@@ -23,5 +23,6 @@ SELECT
 	,TableName
 	,TotalRows
 	,DataSizeMB
+	,DataSizeMB/1024 AS DataSizeGB
 FROM TableList
 ORDER BY DataSizeMB DESC, TotalRows DESC

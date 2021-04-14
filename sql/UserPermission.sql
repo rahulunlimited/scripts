@@ -1,4 +1,4 @@
---Script shows user permissions
+/*Script shows user permissions*/
 SELECT DISTINCT 
 	pr.principal_id, 
 	pr.name AS [UserName], 

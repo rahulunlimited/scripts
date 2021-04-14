@@ -1,4 +1,4 @@
-/*Script shows user roles*/
+/*Script shows members of a role*/
 SELECT DP1.name AS DatabaseRoleName,   
    isnull (DP2.name, 'No members') AS DatabaseUserName   
    ,dp1.type

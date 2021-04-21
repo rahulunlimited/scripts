@@ -8,12 +8,12 @@ SELECT DISTINCT
 	isnull(pe.permission_name, '') permission, 
 	pe.class_desc, 
 	pr.type,
-	s.name AS SchemaName,
-	o.[name] AS 'Object' 
+	coalesce(sn.name, s.name) as SchemaName
 FROM sys.database_principals AS pr 
 LEFT JOIN sys.database_permissions AS pe ON pe.grantee_principal_id = pr.principal_id
 LEFT JOIN sys.objects AS o on (o.object_id = pe.major_id)
 LEFT JOIN sys.schemas s ON s.schema_id = o.schema_id
+LEFT JOIN sys.schemas sn ON sn.schema_id = pe.major_id
 where 1 = 1
 and (pr.name not like 'db_%') 
 and pr.name not in ('guest', 'public', 'sys')

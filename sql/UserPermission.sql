@@ -9,6 +9,7 @@ SELECT DISTINCT
 	pe.class_desc, 
 	pr.type,
 	coalesce(sn.name, s.name) as SchemaName
+	,o.name as ObjectName
 FROM sys.database_principals AS pr 
 LEFT JOIN sys.database_permissions AS pe ON pe.grantee_principal_id = pr.principal_id
 LEFT JOIN sys.objects AS o on (o.object_id = pe.major_id)
